@@ -1,8 +1,14 @@
 import { type Node, type NodeProps, Position, useReactFlow } from "@xyflow/react";
 import { EllipsisVertical } from "lucide-react";
 import { useCallback } from "react";
-import { BaseNode, BaseNodeContent, BaseNodeFooter, BaseNodeHeader, BaseNodeHeaderTitle } from "@/components/base-node";
-import { LabeledHandle } from "@/components/labeled-handle";
+import {
+  BaseNode,
+  BaseNodeContent,
+  BaseNodeFooter,
+  BaseNodeHeader,
+  BaseNodeHeaderTitle,
+} from "@/components/react-flow/base-node";
+import { LabeledHandle } from "@/components/react-flow/labeled-handle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,9 +18,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type NumNode = Node<{
-  value: number;
-}>;
+export type NumNode = Node<
+  {
+    value: number;
+  },
+  "num"
+>;
 
 export function NumNode({ id, data }: NodeProps<NumNode>) {
   const { updateNodeData, setNodes } = useReactFlow();
@@ -38,7 +47,7 @@ export function NumNode({ id, data }: NodeProps<NumNode>) {
   return (
     <BaseNode>
       <BaseNodeHeader className="border-b">
-        <BaseNodeHeaderTitle>Num</BaseNodeHeaderTitle>
+        <BaseNodeHeaderTitle>Num {id}</BaseNodeHeaderTitle>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -62,7 +71,7 @@ export function NumNode({ id, data }: NodeProps<NumNode>) {
         </div>
       </BaseNodeContent>
 
-      <BaseNodeFooter className="bg-muted items-end px-0 py-1 w-full rounded-b">
+      <BaseNodeFooter className="bg-muted items-end px-0 py-1 w-full">
         <LabeledHandle title="out" type="source" position={Position.Right} />
       </BaseNodeFooter>
     </BaseNode>

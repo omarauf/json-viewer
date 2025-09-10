@@ -17,7 +17,20 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "useUniqueElementIds": {
+          "level": "error",
+          "options": {
+            "excludedComponents": ["BaseNode", "LabeledHandle"]
+          }
+        }
+      },
+      "a11y": {
+        "noStaticElementInteractions": "off",
+        "noPositiveTabindex": "off",
+        "noNoninteractiveTabindex": "off"
+      }
     }
   },
   "javascript": {

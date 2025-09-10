@@ -1,6 +1,8 @@
 import type { OnMount } from "@monaco-editor/react";
 import Editor from "@monaco-editor/react";
 import { useState } from "react";
+import { useShallow } from "zustand/shallow";
+import { useStore } from "@/store";
 
 type Props = {
   schema?: string;
@@ -8,6 +10,8 @@ type Props = {
 };
 
 export function JsonMonacoEditor({ schema, width }: Props) {
+  const [value, setValue] = useStore(useShallow((s) => [s.value, s.setValue]));
+
   const [status, setStatus] = useState({
     line: 1,
     column: 1,
@@ -64,7 +68,8 @@ export function JsonMonacoEditor({ schema, width }: Props) {
         width="100%"
         defaultLanguage="json"
         onMount={handleEditorDidMount}
-        defaultValue={`{\n  "hello": "world"\n}`}
+        value={JSON.stringify(value, null, 2)}
+        onChange={(v) => setValue(JSON.parse(v ?? "{}"))}
         options={{
           minimap: { enabled: false },
           formatOnPaste: true,
@@ -73,6 +78,7 @@ export function JsonMonacoEditor({ schema, width }: Props) {
           automaticLayout: true,
           // scrollBeyondLastColumn: 4,
           scrollBeyondLastLine: false,
+          wordWrap: "on",
           suggest: {
             showStatusBar: true,
           },

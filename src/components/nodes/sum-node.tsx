@@ -1,44 +1,65 @@
-import { type Node, type NodeProps, Position, useReactFlow, useStore } from "@xyflow/react";
+import { type Node, type NodeProps, Position, useNodeConnections, useNodesData, useReactFlow } from "@xyflow/react";
 import { useEffect } from "react";
+import type { AppNode } from "@/app/flow/type";
+import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "../react-flow/base-node";
+import { LabeledHandle } from "../react-flow/labeled-handle";
 
-import { BaseNode, BaseNodeHeader, BaseNodeHeaderTitle } from "../base-node";
-import { LabeledHandle } from "../labeled-handle";
+export type SumNode = Node<
+  {
+    value: number;
+  },
+  "sum"
+>;
 
-export type SumNode = Node<{
-  value: number;
-}>;
+export function SumNode({ id, data }: NodeProps<SumNode>) {
+  const { updateNodeData } = useReactFlow();
 
-export function SumNode({ id }: NodeProps<SumNode>) {
-  const { updateNodeData, getHandleConnections } = useReactFlow();
-  const { x, y } = useStore((state) => ({
-    x: getHandleValue(getHandleConnections({ nodeId: id, id: "x", type: "target" }), state.nodeLookup),
-    y: getHandleValue(getHandleConnections({ nodeId: id, id: "y", type: "target" }), state.nodeLookup),
-  }));
+  // Method I - Use useNodeConnections and useNodesData hooks to get source nodes
+  const connections = useNodeConnections({ id: id, handleType: "target" });
+  const sourceIds = connections.map((c) => c.source);
+  const sourcesData = useNodesData<AppNode>(sourceIds);
+  const total = sourcesData.reduce((acc, node) => {
+    const v = "value" in node?.data ? node.data.value : undefined;
+    if (typeof v !== "number") return acc;
+    if (node.type === "num" || node.type === "sum") return acc + v;
+    return acc;
+  }, 0);
+
+  // Method II - Use store with selector and shallow to get source nodes
+  // const selector = useCallback(
+  //   (s: AppStore) => {
+  //     const edges = s.edges.filter((e) => e.target === id);
+  //     const nodes = s.nodes.filter((n) => edges.map((e) => e.source).includes(n.id));
+  //     return nodes;
+  //   },
+  //   [id],
+  // );
+  // const sourceNodes = useStoreWithEqualityFn(useStore, selector, shallow);
+
+  // const total = sourceNodes.reduce((acc, node) => {
+  //   if (node.type === "num" || node.type === "sum") return acc + (node?.data.value ?? 0);
+  //   return acc;
+  // }, 0);
 
   useEffect(() => {
-    updateNodeData(id, { value: x + y });
-  }, [x, y]);
+    updateNodeData(id, { value: total });
+  }, [id, total, updateNodeData]);
 
   return (
     <BaseNode className="w-32">
       <BaseNodeHeader>
-        <BaseNodeHeaderTitle>Sum</BaseNodeHeaderTitle>
+        <BaseNodeHeaderTitle>Sum {id}</BaseNodeHeaderTitle>
       </BaseNodeHeader>
 
-      <footer className="bg-muted rounded-b">
+      <BaseNodeContent>
+        <pre>{data.value}</pre>
+      </BaseNodeContent>
+
+      <footer className="bg-muted rounded-b-[6px]">
         <LabeledHandle title="x" id="x" type="target" position={Position.Left} />
         <LabeledHandle title="y" id="y" type="target" position={Position.Left} />
         <LabeledHandle title="out" type="source" position={Position.Right} />
       </footer>
     </BaseNode>
   );
-}
-
-function getHandleValue(connections: Array<{ source: string }>, lookup: Map<string, Node<any>>) {
-  return connections.reduce((acc, { source }) => {
-    const node = lookup.get(source)!;
-    const value = node.data.value;
-
-    return typeof value === "number" ? acc + value : acc;
-  }, 0);
 }

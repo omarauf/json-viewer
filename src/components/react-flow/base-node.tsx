@@ -1,8 +1,6 @@
 import { forwardRef, type HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-// react-flow__node react-flow__node-sum nopan selected selectable draggable
-
 export const BaseNode = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...props }, ref) => (
   <div
     ref={ref}
@@ -70,7 +68,7 @@ export const BaseNodeFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivE
     <div
       ref={ref}
       data-slot="base-node-footer"
-      className={cn("flex flex-col items-center gap-y-2 border-t px-3 pb-3 pt-2", className)}
+      className={cn("flex flex-col items-center gap-y-2 border-t px-3 pb-3 pt-2 rounded-b-[6px]", className)}
       {...props}
     />
   ),

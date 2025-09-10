@@ -1,113 +1,41 @@
-import { BaseNode, BaseNodeContent } from "@/components/base-node";
-import { NodeTooltip, NodeTooltipContent, NodeTooltipTrigger } from "@/components/node-tooltip";
-import {
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
-  Background,
-  BackgroundVariant,
-  type Edge,
-  type Node,
-  type OnConnect,
-  type OnEdgesChange,
-  type OnNodesChange,
-  Position,
-  ReactFlow,
-} from "@xyflow/react";
-import { useCallback, useState } from "react";
-
-
-import { NumNode } from '@/components/nodes/num-node';
-import { SumNode } from '@/components/nodes/sum-node';
-
-import { DataEdge } from '@/components/data-edge';
-
-
-function Tooltip() {
-  return (
-    <NodeTooltip>
-      <NodeTooltipContent position={Position.Top}>Hidden Content</NodeTooltipContent>
-      <BaseNode>
-        <BaseNodeContent>
-          <NodeTooltipTrigger>Hover</NodeTooltipTrigger>
-        </BaseNodeContent>
-      </BaseNode>
-    </NodeTooltip>
-  );
-}
+import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
+import { useShallow } from "zustand/shallow";
+import { BasicNode } from "@/components/nodes/basic-node";
+import { InputNode } from "@/components/nodes/input-node";
+import { KeyValueNode } from "@/components/nodes/key-value-node";
+import { NumNode } from "@/components/nodes/num-node";
+import { SelectorNode } from "@/components/nodes/selector-node";
+import { SumNode } from "@/components/nodes/sum-node";
+import { DataEdge } from "@/components/react-flow/data-edge";
+import { type AppStore, useStore } from "@/store";
+import { LayoutButtonsMemo } from "./layout-buttons";
 
 const nodeTypes = {
-  tooltip: Tooltip, num: NumNode,
+  inputJson: InputNode,
+  basic: BasicNode,
+  num: NumNode,
   sum: SumNode,
+  selector: SelectorNode,
+  keyValue: KeyValueNode,
 };
-
-const initialNodes: Node[] = [
-  // { id: "n1", position: { x: 0, y: 0 }, data: { label: "Node 1" }, type: "tooltip" },
-  // { id: "n2", position: { x: 0, y: 100 }, data: { label: "Node 2" }, type: "tooltip" },
-  { id: 'a', type: 'num', data: { value: 0 }, position: { x: 0, y: 0 } },
-  { id: 'b', type: 'num', data: { value: 0 }, position: { x: 0, y: 200 } },
-  { id: 'c', type: 'sum', data: { value: 0 }, position: { x: 300, y: 100 } },
-  { id: 'd', type: 'num', data: { value: 0 }, position: { x: 0, y: 400 } },
-  { id: 'e', type: 'sum', data: { value: 0 }, position: { x: 600, y: 400 } },
-];
 
 const edgeTypes = {
   data: DataEdge,
 };
 
-
-const initialEdges: Edge[] = [
-  // { id: "n1-n2", source: "n1", target: "n2" },
-  {
-    id: 'a->c',
-    type: 'data',
-    data: { key: 'value' },
-    source: 'a',
-    target: 'c',
-    targetHandle: 'x',
-  },
-  {
-    id: 'b->c',
-    type: 'data',
-    data: { key: 'value' },
-    source: 'b',
-    target: 'c',
-    targetHandle: 'y',
-  },
-  {
-    id: 'c->e',
-    type: 'data',
-    data: { key: 'value' },
-    source: 'c',
-    target: 'e',
-    targetHandle: 'x',
-  },
-  {
-    id: 'd->e',
-    type: 'data',
-    data: { key: 'value' },
-    source: 'd',
-    target: 'e',
-    targetHandle: 'y',
-  },
-];
+const selector = (state: AppStore) => ({
+  nodes: state.nodes,
+  edges: state.edges,
+  onNodesChange: state.onNodesChange,
+  onEdgesChange: state.onEdgesChange,
+  onConnect: state.onConnect,
+});
 
 export default function Flow() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
-  const onNodesChange: OnNodesChange<Node> = useCallback(
-    (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    [],
-  );
-  const onEdgesChange: OnEdgesChange<Edge> = useCallback(
-    (changes) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    [],
-  );
-  const onConnect: OnConnect = useCallback((params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)), []);
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } = useStore(useShallow(selector));
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div className="border" style={{ width: "100vw", height: "100vh" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -116,8 +44,15 @@ export default function Flow() {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
+        // isValidConnection={(e) => {
+        //   console.log(e);
+        //   return true;
+        // }}
         fitView
       >
+        <LayoutButtonsMemo position="top-right" />
+
+
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
       </ReactFlow>
     </div>
