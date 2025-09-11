@@ -3,9 +3,12 @@ import type { AppNode } from "@/app/flow/types";
 import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "../react-flow/base-node";
 import { LabeledHandle } from "../react-flow/labeled-handle";
 
-export type SelectorNode = Node<{
-  value: number;
-}>;
+type SelectorNode = Node<
+  {
+    value: number;
+  },
+  "selector"
+>;
 
 export function SelectorNode({ id }: NodeProps<SelectorNode>) {
   const connections = useNodeConnections({ id: id, handleType: "target" });

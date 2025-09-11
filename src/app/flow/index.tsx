@@ -1,23 +1,9 @@
 import { Background, BackgroundVariant, ReactFlow } from "@xyflow/react";
 import { useShallow } from "zustand/shallow";
-import { BasicNode } from "@/components/nodes/basic-node";
-import { InputNode } from "@/components/nodes/input-node";
-import { KeyValueNode } from "@/components/nodes/key-value-node";
-import { NumNode } from "@/components/nodes/num-node";
-import { SelectorNode } from "@/components/nodes/selector-node";
-import { SumNode } from "@/components/nodes/sum-node";
+import { nodeTypes } from "@/components/nodes";
 import { DataEdge } from "@/components/react-flow/data-edge";
 import { type AppStore, useStore } from "@/store";
 import { LayoutButtonsMemo } from "./components/layout-buttons";
-
-const nodeTypes = {
-  inputJson: InputNode,
-  basic: BasicNode,
-  num: NumNode,
-  sum: SumNode,
-  selector: SelectorNode,
-  keyValue: KeyValueNode,
-};
 
 const edgeTypes = {
   data: DataEdge,

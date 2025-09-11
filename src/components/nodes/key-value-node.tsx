@@ -2,9 +2,12 @@ import { type Node, type NodeProps, Position } from "@xyflow/react";
 import { BaseHandle } from "../react-flow/base-handle";
 import { BaseNode, BaseNodeContent } from "../react-flow/base-node";
 
-export type KeyValueNode = Node<{
-  value: Record<string, object>;
-}>;
+type KeyValueNode = Node<
+  {
+    value: Record<string, object>;
+  },
+  "keyValue"
+>;
 
 export function KeyValueNode({ data }: NodeProps<KeyValueNode>) {
   const keys = Object.keys(data.value);

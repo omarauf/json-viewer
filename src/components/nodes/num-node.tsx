@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type NumNode = Node<
+type NumNode = Node<
   {
     value: number;
   },

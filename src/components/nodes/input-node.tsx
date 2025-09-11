@@ -2,7 +2,7 @@ import { type Node, type NodeProps, Position } from "@xyflow/react";
 import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "@/components/react-flow/base-node";
 import { BaseHandle } from "../react-flow/base-handle";
 
-export type InputNode = Node<
+type InputNode = Node<
   {
     value: object;
   },

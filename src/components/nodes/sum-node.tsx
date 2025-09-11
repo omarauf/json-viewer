@@ -4,7 +4,7 @@ import type { AppNode } from "@/app/flow/types";
 import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "../react-flow/base-node";
 import { LabeledHandle } from "../react-flow/labeled-handle";
 
-export type SumNode = Node<
+type SumNode = Node<
   {
     value: number;
   },

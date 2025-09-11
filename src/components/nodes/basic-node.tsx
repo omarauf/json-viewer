@@ -2,7 +2,7 @@ import { type Node, type NodeProps, Position } from "@xyflow/react";
 import { BaseNode, BaseNodeContent } from "../react-flow/base-node";
 import { NodeTooltip, NodeTooltipContent, NodeTooltipTrigger } from "../react-flow/node-tooltip";
 
-export type BasicNode = Node<
+type BasicNode = Node<
   {
     label: string;
   },
