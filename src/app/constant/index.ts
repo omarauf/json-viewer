@@ -1,5 +1,4 @@
 import { jsonToGraph } from "@/utils/json";
-import type { AppEdge, AppNode } from "../flow/type";
 
 export function getDefaultValue() {
   // const defaultJson = {
@@ -73,22 +72,22 @@ export function getDefaultValue() {
   // ];
 
   const defaultJson = {
-      "name": "Apple",
-      "color": "#FF0000",
-      "details": {
-        "type": "Pome",
-        "season": "Fall"
+    name: "Apple",
+    color: "#FF0000",
+    details: {
+      type: "Pome",
+      season: "Fall",
+    },
+    names: ["ahmed", "samer"],
+    nutrients: {
+      calories: 52,
+      fiber: "2.4g",
+      vitaminC: "4.6mg",
+      test: {
+        name: "Apple",
       },
-      "names": ["ahmed","samer"],
-      "nutrients": {
-        "calories": 52,
-        "fiber": "2.4g",
-        "vitaminC": "4.6mg",
-        "test": {
-          "name": "Apple"
-        }
-      }
-    }
+    },
+  };
 
   const { nodes: initialNodes, edges: initialEdges } = jsonToGraph(defaultJson);
 

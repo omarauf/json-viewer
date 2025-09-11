@@ -1,14 +1,5 @@
-import {
-  type Node,
-  type NodeProps,
-  Position,
-  useNodeConnections,
-  useNodesData,
-  useReactFlow,
-  useStore,
-} from "@xyflow/react";
-import { useEffect } from "react";
-import type { AppNode } from "@/app/flow/type";
+import { type Node, type NodeProps, Position, useNodeConnections, useNodesData } from "@xyflow/react";
+import type { AppNode } from "@/app/flow/types";
 import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "../react-flow/base-node";
 import { LabeledHandle } from "../react-flow/labeled-handle";
 

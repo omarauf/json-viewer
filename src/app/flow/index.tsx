@@ -8,7 +8,7 @@ import { SelectorNode } from "@/components/nodes/selector-node";
 import { SumNode } from "@/components/nodes/sum-node";
 import { DataEdge } from "@/components/react-flow/data-edge";
 import { type AppStore, useStore } from "@/store";
-import { LayoutButtonsMemo } from "./layout-buttons";
+import { LayoutButtonsMemo } from "./components/layout-buttons";
 
 const nodeTypes = {
   inputJson: InputNode,
@@ -44,14 +44,9 @@ export default function Flow() {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        // isValidConnection={(e) => {
-        //   console.log(e);
-        //   return true;
-        // }}
         fitView
       >
         <LayoutButtonsMemo position="top-right" />
-
 
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
       </ReactFlow>

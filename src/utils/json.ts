@@ -1,15 +1,4 @@
-// interface AppNode {
-//   id: string;
-//   data: Record<string, any>;
-// }
-
-import type { AppEdge, AppNode } from "@/app/flow/type";
-
-// interface AppEdge {
-//   id: string;
-//   source: string;
-//   target: string;
-// }
+import type { AppEdge, AppNode } from "@/app/flow/types";
 
 interface Result {
   nodes: AppNode[];
@@ -44,7 +33,7 @@ export function jsonToGraph(obj: object): Result {
             // For primitive array items, create a node with the value as both key and value
             const childId = nodeCounter.toString();
             nodeCounter++;
-            nodes.push({ id: childId, position: { x: 0, y: 0 },data: { value: { [item]: item } }, type: "keyValue" });
+            nodes.push({ id: childId, position: { x: 0, y: 0 }, data: { value: { [item]: item } }, type: "keyValue" });
             edges.push({
               id: `e${currentId}-${childId}`,
               source: currentId,
@@ -67,7 +56,7 @@ export function jsonToGraph(obj: object): Result {
       }
     }
 
-    nodes.push({ id: currentId, position: { x: 0, y: 0 },data: { value: nodeData }, type: "keyValue" });
+    nodes.push({ id: currentId, position: { x: 0, y: 0 }, data: { value: nodeData }, type: "keyValue" });
 
     return currentId;
   }

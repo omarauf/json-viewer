@@ -1,19 +1,15 @@
-import type { AppEdge, AppNode } from "@/app/flow/type";
 import Dagre from "@dagrejs/dagre";
-
-import { Position } from "@xyflow/react";
+import { type Edge, type Node, Position } from "@xyflow/react";
 
 const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-export const getLayoutElements = (
-  nodes: AppNode[],
-  edges: AppEdge[],
-  options: { direction: "TB" | "LR" }
-) => {
+export const getLayoutElements = (nodes: Node[], edges: Edge[], options: { direction: "TB" | "LR" }) => {
   const isHorizontal = options.direction === "LR";
   dagreGraph.setGraph({ rankdir: options.direction });
 
-  edges.forEach((edge) => dagreGraph.setEdge(edge.source, edge.target));
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, { width: node.measured?.width, height: node.measured?.height });
   });

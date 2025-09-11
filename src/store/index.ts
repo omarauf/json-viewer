@@ -7,9 +7,9 @@ import {
   type OnNodesChange,
 } from "@xyflow/react";
 import { create, type StateCreator } from "zustand";
-import { persist, subscribeWithSelector } from "zustand/middleware";
+import { subscribeWithSelector } from "zustand/middleware";
 import { getDefaultValue } from "@/app/constant";
-import type { AppEdge, AppNode } from "@/app/flow/type";
+import type { AppEdge, AppNode } from "@/app/flow/types";
 
 const { defaultJson, initialEdges, initialNodes } = getDefaultValue();
 
@@ -38,7 +38,7 @@ const appStore: StateCreator<AppStore> = (set, get) => ({
       value,
       nodes: get().nodes.map((node) => {
         if (node.type === "inputJson") {
-          return { ...node, data: { ...node.data, value } };
+          return { ...node, data: { ...node.data, value: value as Record<string, object> } };
         }
 
         return node;

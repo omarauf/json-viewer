@@ -1,16 +1,6 @@
-import {
-  type Node,
-  type NodeProps,
-  Position,
-  useNodeConnections,
-  useNodesData,
-  useReactFlow,
-  useStore,
-} from "@xyflow/react";
-import { useEffect } from "react";
-import type { AppNode } from "@/app/flow/type";
-import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "../react-flow/base-node";
-import { LabeledHandle } from "../react-flow/labeled-handle";
+import { type Node, type NodeProps, Position } from "@xyflow/react";
+import { BaseHandle } from "../react-flow/base-handle";
+import { BaseNode, BaseNodeContent } from "../react-flow/base-node";
 
 export type KeyValueNode = Node<{
   value: Record<string, object>;
@@ -20,34 +10,23 @@ export function KeyValueNode({ data }: NodeProps<KeyValueNode>) {
   const keys = Object.keys(data.value);
 
   return (
-    <BaseNode className="w-32">
-      <BaseNodeHeader>
-        <BaseNodeHeaderTitle>KeyValue</BaseNodeHeaderTitle>
-      </BaseNodeHeader>
-
-      <BaseNodeContent>
+    <BaseNode className="w-fit min-w-40">
+      <BaseNodeContent className="font-mono text-sm divide-y divide-gray-700 p-0 gap-0">
         {keys.map((k) => {
           const v = data.value[k];
-          if (typeof v === "object") {
-            return (
-              <div key={k}>
-                {k}: {JSON.stringify(v)}
-              </div>
-            );
-          }
+          const value = typeof v === "object" ? JSON.stringify(v, null, 2) : String(v);
 
           return (
-            <div key={k}>
-              {k}: {v}
+            <div key={k} className="flex space-x-2 px-2 py-1">
+              <span className="text-blue-500">{k}:</span>
+              <span className="text-emerald-500">{value}</span>
             </div>
           );
         })}
       </BaseNodeContent>
 
-      <footer className="bg-muted rounded-b-[6px]">
-        <LabeledHandle title="x" id="x" type="target" position={Position.Left} />
-        <LabeledHandle title="out" type="source" position={Position.Right} />
-      </footer>
+      <BaseHandle position={Position.Right} type="source" className="!bg-transparent !border-none !w-0 !h-0" />
+      <BaseHandle position={Position.Left} type="target" className="!bg-transparent !border-none !w-0 !h-0" />
     </BaseNode>
   );
 }

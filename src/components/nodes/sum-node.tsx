@@ -1,6 +1,6 @@
 import { type Node, type NodeProps, Position, useNodeConnections, useNodesData, useReactFlow } from "@xyflow/react";
 import { useEffect } from "react";
-import type { AppNode } from "@/app/flow/type";
+import type { AppNode } from "@/app/flow/types";
 import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "../react-flow/base-node";
 import { LabeledHandle } from "../react-flow/labeled-handle";
 
@@ -19,9 +19,9 @@ export function SumNode({ id, data }: NodeProps<SumNode>) {
   const sourceIds = connections.map((c) => c.source);
   const sourcesData = useNodesData<AppNode>(sourceIds);
   const total = sourcesData.reduce((acc, node) => {
-    const v = "value" in node?.data ? node.data.value : undefined;
+    const v = node?.data && "value" in node.data ? node.data.value : undefined;
     if (typeof v !== "number") return acc;
-    if (node.type === "num" || node.type === "sum") return acc + v;
+    if (node?.type === "num" || node?.type === "sum") return acc + v;
     return acc;
   }, 0);
 
