@@ -93,7 +93,56 @@ export function getDefaultValue() {
 
   return {
     defaultJson,
-    initialNodes,
-    initialEdges,
+    initialNodes: [
+      ...initialNodes,
+      {
+        id: "node-1757625122670",
+        type: "inputJson",
+        position: {
+          x: 0,
+          y: 287,
+        },
+        data: {
+          value: {},
+        },
+        measured: {
+          width: 320,
+          height: 543,
+        },
+        selected: false,
+        dragging: false,
+        targetPosition: "left",
+        sourcePosition: "right",
+      },
+      {
+        id: "node-1757625124946",
+        type: "selector",
+        position: {
+          x: 386,
+          y: 491.5,
+        },
+        data: {
+          value: 2,
+        },
+        measured: {
+          width: 128,
+          height: 134,
+        },
+        selected: true,
+        dragging: false,
+        targetPosition: "left",
+        sourcePosition: "right",
+      },
+    ],
+    initialEdges: [
+      ...initialEdges,
+      {
+        source: "node-1757625122670",
+        sourceHandle: "inputJson-out",
+        target: "node-1757625124946",
+        targetHandle: "x",
+        id: "xy-edge__node-1757625122670inputJson-out-node-1757625124946x",
+      },
+    ],
   };
 }

@@ -1,22 +1,21 @@
-import { type Node, type NodeProps, Position } from "@xyflow/react";
+import { type Node, type NodeProps, Position, useNodeConnections, useNodesData } from "@xyflow/react";
 import { BaseHandle } from "../react-flow/base-handle";
 import { BaseNode, BaseNodeContent } from "../react-flow/base-node";
+import type { InputNode } from "./input-node";
 
-type KeyValueNode = Node<
-  {
-    value: Record<string, object>;
-  },
-  "keyValue"
->;
+type ViewerNode = Node<Record<string, unknown>, "viewer">;
 
-export function KeyValueNode({ data }: NodeProps<KeyValueNode>) {
-  const keys = Object.keys(data.value);
+export function ViewerNode({ id }: NodeProps<ViewerNode>) {
+  const connections = useNodeConnections({ id: id, handleType: "target" });
+  const sourceIds = connections.map((c) => c.source);
+  const sourcesData = useNodesData<InputNode>(sourceIds)[0]?.data.value;
+  const keys = Object.keys(sourcesData || {});
 
   return (
     <BaseNode className="w-fit min-w-40">
       <BaseNodeContent className="font-mono text-sm divide-y divide-gray-700 p-0 gap-0">
         {keys.map((k) => {
-          const v = data.value[k];
+          const v = sourcesData?.[k];
           const value = typeof v === "object" ? JSON.stringify(v, null, 2) : String(v);
 
           return (

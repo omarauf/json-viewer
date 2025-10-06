@@ -3,7 +3,7 @@ import { Panel, useEdges, useNodes, useReactFlow } from "@xyflow/react";
 import { memo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { getLayoutElements } from "@/utils/layout";
-import { useAutoLayout } from "../hooks/use-aut-layout";
+import { useAutoLayout } from "../hooks/use-auto-layout";
 
 type Props = {
   position: PanelPosition;
@@ -17,7 +17,6 @@ function LayoutButtons({ position }: Props) {
 
   const onLayout = useCallback(
     (direction: "TB" | "LR") => {
-      console.log(nodes);
       const aligned = getLayoutElements(nodes, edges, { direction });
 
       setNodes([...aligned.nodes]);
@@ -28,6 +27,10 @@ function LayoutButtons({ position }: Props) {
     [nodes, edges, fitView, setEdges, setNodes],
   );
 
+  const copyDataTpClipboard = useCallback(() => {
+    navigator.clipboard.writeText(JSON.stringify({ nodes, edges }, null, 2));
+  }, [nodes, edges]);
+
   return (
     <Panel position={position}>
       <div className="flex gap-4">
@@ -36,6 +39,9 @@ function LayoutButtons({ position }: Props) {
         </Button> */}
         <Button variant="default" type="button" onClick={() => onLayout("LR")}>
           horizontal layout
+        </Button>
+        <Button variant="default" type="button" onClick={copyDataTpClipboard}>
+          Copy
         </Button>
       </div>
     </Panel>

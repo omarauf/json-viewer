@@ -1,15 +1,25 @@
-import { type Node, type NodeProps, Position } from "@xyflow/react";
+import { type Node, type NodeProps, Position, useReactFlow } from "@xyflow/react";
+import { useEffect } from "react";
 import { BaseNode, BaseNodeContent, BaseNodeHeader, BaseNodeHeaderTitle } from "@/components/react-flow/base-node";
+import { useStore } from "@/store";
 import { BaseHandle } from "../react-flow/base-handle";
 
-type InputNode = Node<
+export type InputNode = Node<
   {
     value: object;
   },
   "inputJson"
 >;
 
-export function InputNode({ data, type }: NodeProps<InputNode>) {
+export function InputNode({ id, data, type }: NodeProps<InputNode>) {
+  const { updateNodeData } = useReactFlow();
+
+  const value = useStore((s) => s.value);
+
+  useEffect(() => {
+    updateNodeData(id, { value });
+  }, [id, value, updateNodeData]);
+
   return (
     <BaseNode className="w-80">
       <BaseNodeHeader className="border-b">
